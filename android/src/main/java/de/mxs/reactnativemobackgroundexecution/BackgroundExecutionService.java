@@ -5,15 +5,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
@@ -40,6 +38,7 @@ public class BackgroundExecutionService extends Service {
     return null;
   }
 
+  @RequiresApi(api = Build.VERSION_CODES.M)
   @Override
   public void onCreate() {
     super.onCreate();
@@ -71,7 +70,7 @@ public class BackgroundExecutionService extends Service {
       throw new RuntimeException("Class.forName of getLaunchIntentForPackage not found");
     }
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
     builder.setContentIntent(pendingIntent);
     startForeground(100, builder.build());
   }
