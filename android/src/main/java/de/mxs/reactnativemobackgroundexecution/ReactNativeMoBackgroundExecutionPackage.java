@@ -13,14 +13,16 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("unused")
 public final class ReactNativeMoBackgroundExecutionPackage implements ReactPackage {
 
-    @Override
-    public @Nonnull List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
-        return Collections.emptyList();
-    }
+  @Override
+  public @Nonnull
+  List<ViewManager> createViewManagers(@Nonnull ReactApplicationContext reactContext) {
+    return Collections.emptyList();
+  }
 
-    @Override
-    public @Nonnull List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
-        return Collections.singletonList(new ReactNativeMoBackgroundExecution(reactContext));
-    }
+  @Override
+  public @Nonnull
+  List<NativeModule> createNativeModules(@Nonnull ReactApplicationContext reactContext) {
+    return Collections.singletonList(new ReactNativeMoBackgroundExecution(reactContext));
+  }
 
 }

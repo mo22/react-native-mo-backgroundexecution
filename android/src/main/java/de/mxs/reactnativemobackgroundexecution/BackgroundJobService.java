@@ -7,30 +7,29 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class BackgroundJobService extends JobService {
 
-    public static void schedule(Context context) {
-        context.getSystemService(JobScheduler.class).schedule(
-            new JobInfo.Builder(0, new ComponentName(context, BackgroundJobService.class))
-                .setMinimumLatency(300 * 1000)
-                .setOverrideDeadline(600 * 1000)
-                .build()
-        );
-    }
+  public static void schedule(Context context) {
+    context.getSystemService(JobScheduler.class).schedule(
+      new JobInfo.Builder(0, new ComponentName(context, BackgroundJobService.class))
+        .setMinimumLatency(300 * 1000)
+        .setOverrideDeadline(600 * 1000)
+        .build()
+    );
+  }
 
-    @Override
-    public boolean onStartJob(JobParameters params) {
-        schedule(getApplicationContext());
-        return true;
-    }
+  @Override
+  public boolean onStartJob(JobParameters params) {
+    schedule(getApplicationContext());
+    return true;
+  }
 
-    @Override
-    public boolean onStopJob(JobParameters params) {
-        return true;
-    }
+  @Override
+  public boolean onStopJob(JobParameters params) {
+    return true;
+  }
 }
