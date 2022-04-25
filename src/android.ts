@@ -6,4 +6,4 @@ export interface Module {
   setStartOnBoot(enabled: boolean): void;
 }
 
-export const Module = (Platform.OS === 'android') ? NativeModules.ReactNativeMoPushNotification as Module : undefined;
+export const Module = (Platform.OS === 'android') ? NativeModules.ReactNativeMoBackgroundExecution as Module : undefined;
