@@ -7,6 +7,7 @@ import android.app.job.JobService;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -14,6 +15,7 @@ import androidx.annotation.RequiresApi;
 public class BackgroundJobService extends JobService {
 
   public static void schedule(Context context) {
+    Log.i("XXX", "BackgroundJobService.schedule");
     context.getSystemService(JobScheduler.class).schedule(
       new JobInfo.Builder(0, new ComponentName(context, BackgroundJobService.class))
         .setMinimumLatency(300 * 1000)
@@ -24,12 +26,14 @@ public class BackgroundJobService extends JobService {
 
   @Override
   public boolean onStartJob(JobParameters params) {
+    Log.i("XXX", "BackgroundJobService.onStartJob");
     schedule(getApplicationContext());
     return true;
   }
 
   @Override
   public boolean onStopJob(JobParameters params) {
+    Log.i("XXX", "BackgroundJobService.onStopJob");
     return true;
   }
 }

@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -20,6 +21,7 @@ import java.util.Objects;
 public class BackgroundExecutionService extends Service {
 
   public static void start(Context context) {
+    Log.i("XXX", "BackgroundExecutionService.start");
     ContextCompat.startForegroundService(
       context,
       new Intent(context, BackgroundExecutionService.class)
@@ -27,6 +29,7 @@ public class BackgroundExecutionService extends Service {
   }
 
   public static void stop(Context context) {
+    Log.i("XXX", "BackgroundExecutionService.stop");
     context.stopService(
       new Intent(context, BackgroundExecutionService.class)
     );
@@ -42,6 +45,7 @@ public class BackgroundExecutionService extends Service {
   @Override
   public void onCreate() {
     super.onCreate();
+    Log.i("XXX", "BackgroundExecutionService.onCreate");
 
     BackgroundJobService.schedule(getApplicationContext());
 
