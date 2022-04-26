@@ -3,7 +3,6 @@ package de.mxs.reactnativemobackgroundexecution;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
-import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -33,14 +32,12 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
   @SuppressWarnings("unused")
   @ReactMethod
   public void start() {
-    Log.i("XXX", "ReactNativeMoBackgroundExecution.start");
     BackgroundExecutionService.start(getReactApplicationContext());
   }
 
   @SuppressWarnings("unused")
   @ReactMethod
   public void stop() {
-    Log.i("XXX", "ReactNativeMoBackgroundExecution.stop");
     BackgroundExecutionService.stop(getReactApplicationContext());
   }
 
@@ -49,7 +46,6 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
   public void setStartOnBoot(boolean enabled) {
     SharedPreferences sharedPreferences = getReactApplicationContext().getSharedPreferences("de.mxs.reactnativemobackgroundexecution", Context.MODE_PRIVATE);
     sharedPreferences.edit().putBoolean("startOnBoot", enabled).apply();
-    Log.i("XXX", "ReactNativeMoBackgroundExecution.setStartOnBoot enabled=" + enabled);
   }
 
 }

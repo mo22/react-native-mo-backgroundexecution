@@ -4,6 +4,7 @@ export interface Module {
   start(): void;
   stop(): void;
   setStartOnBoot(enabled: boolean): void;
+  delay(ms: number): Promise<void>;
 }
 
 export type Event = {

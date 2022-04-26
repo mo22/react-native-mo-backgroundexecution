@@ -28,4 +28,12 @@ export class ReactNativeMoBackgroundExecution {
     });
   }
 
+  public static async delay(ms: number): Promise<void> {
+    if (Platform.OS === 'android') {
+      await android.Module!.delay(ms);
+    } else {
+      await new Promise((resolve) => setTimeout(resolve, ms));
+    }
+  }
+
 }
