@@ -4,6 +4,10 @@ export interface Module {
     stop(): void;
     setStartOnBoot(enabled: boolean): void;
     delay(ms: number): Promise<void>;
+    isIgnoringBatteryOptimizations(): Promise<boolean>;
+    requestIgnoringBatteryOptimizations(): Promise<boolean>;
+    createWakeLock(args: {}): Promise<string>;
+    releaseWakeLock(id: string): Promise<void>;
 }
 export declare type Event = {
     type: 'bootCompleted';
