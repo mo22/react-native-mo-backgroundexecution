@@ -9,13 +9,17 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
@@ -59,17 +63,6 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
 
   @SuppressWarnings("unused")
   @ReactMethod
-  public void test(Promise promise) {
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-      PowerManager powerManager = getReactApplicationContext().getSystemService(PowerManager.class);
-      // PARTIAL_WAKE_LOCK ?
-      PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "app:test");
-      wakeLock.acquire(1000 * 60 * 60); // one hour?
-    }
-  }
-
-  @SuppressWarnings("unused")
-  @ReactMethod
   public void isIgnoringBatteryOptimizations(Promise promise) {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
       PowerManager powerManager = getReactApplicationContext().getSystemService(PowerManager.class);
@@ -94,6 +87,7 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
             promise.resolve(true);
           }
         }
+
         @Override
         public void onNewIntent(Intent intent) {
         }
@@ -102,6 +96,45 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
       activity.startActivityForResult(intent, 1);
     } else {
       promise.resolve(true);
+    }
+  }
+
+  private int wakeLockCounter = 1;
+  private final Map<String, PowerManager.WakeLock> wakeLocks = new HashMap<String, PowerManager.WakeLock>();
+
+  @SuppressWarnings("unused")
+  @ReactMethod
+  public void createWakeLock(ReadableMap args, Promise promise) {
+    try {
+      Log.i("XXX", "createWakeLock");
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        PowerManager powerManager = getReactApplicationContext().getSystemService(PowerManager.class);
+        String tag = "rnbe:" + wakeLockCounter;
+        wakeLockCounter++;
+        // @TODO: type?
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
+        // @TODO: timeout?
+        wakeLock.acquire();
+        wakeLocks.put(tag, wakeLock);
+      } else {
+        promise.resolve(true);
+      }
+    } catch (Exception ex) {
+      promise.reject(ex);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  @ReactMethod
+  public void releaseWakeLock(String id, Promise promise) {
+    try {
+      if (wakeLocks.containsKey(id)) {
+        Objects.requireNonNull(wakeLocks.get(id)).release();
+        wakeLocks.remove(id);
+      }
+      promise.resolve(null);
+    } catch (Exception ex) {
+      promise.reject(ex);
     }
   }
 
