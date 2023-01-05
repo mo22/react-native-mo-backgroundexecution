@@ -5,9 +5,9 @@
 
   <application>
 
-    <service android:name=".BackgroundExecutionService" android:exported="false" />
+    <service android:name=".BackgroundExecutionService" android:exported="false" android:stopWithTask="false" />
 
-    <service android:name=".BackgroundJobService" android:exported="false" android:permission="android.permission.BIND_JOB_SERVICE" />
+    <service android:name=".BackgroundJobService" android:exported="false" android:stopWithTask="false" android:permission="android.permission.BIND_JOB_SERVICE" />
 
     <receiver android:name=".StartReactOnBootReceiver" android:exported="true" android:enabled="true">
       <intent-filter>
