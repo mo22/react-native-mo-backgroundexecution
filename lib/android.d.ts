@@ -9,7 +9,7 @@ export interface Module {
     createWakeLock(args: {}): Promise<string>;
     releaseWakeLock(id: string): Promise<void>;
 }
-export declare type Event = {
+export type Event = {
     type: 'bootCompleted';
 };
 export declare const Module: Module | undefined;
