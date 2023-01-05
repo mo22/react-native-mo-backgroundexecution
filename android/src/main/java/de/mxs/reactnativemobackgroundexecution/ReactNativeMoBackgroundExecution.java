@@ -116,6 +116,7 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
         // @TODO: timeout?
         wakeLock.acquire();
         wakeLocks.put(tag, wakeLock);
+        promise.resolve(tag);
       } else {
         promise.resolve(true);
       }
