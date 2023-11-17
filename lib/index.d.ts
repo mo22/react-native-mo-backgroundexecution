@@ -1,8 +1,8 @@
 import * as android from './android';
-export declare class ReactNativeMoBackgroundExecution {
+export declare class BackgroundExecution {
     /**
-   * native ios functions. use with caution
-   */
+     * native ios functions. use with caution
+     */
     static readonly ios: undefined;
     /**
      * native android functions. use with caution

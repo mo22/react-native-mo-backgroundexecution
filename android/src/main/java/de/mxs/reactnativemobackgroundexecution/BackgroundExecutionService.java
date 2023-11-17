@@ -49,6 +49,7 @@ public class BackgroundExecutionService extends Service {
 
     BackgroundJobService.schedule(getApplicationContext());
 
+    // start a timer?
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
       if (notificationManager == null) throw new RuntimeException("notificationManager null");

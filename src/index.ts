@@ -1,10 +1,10 @@
 import { Platform } from "react-native";
 import * as android from './android';
 
-export class ReactNativeMoBackgroundExecution {
+export class BackgroundExecution {
   /**
- * native ios functions. use with caution
- */
+   * native ios functions. use with caution
+   */
   public static readonly ios = undefined;
 
   /**

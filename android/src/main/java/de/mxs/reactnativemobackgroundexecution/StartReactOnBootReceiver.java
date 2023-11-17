@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceEventListener;
@@ -19,15 +20,16 @@ public class StartReactOnBootReceiver extends BroadcastReceiver {
   @Override
   public void onReceive(Context context, Intent intent) {
     if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-//      Log.i("XXX", "StartReactOnBootReceiver ACTION_BOOT_COMPLETED");
+      Log.i("XXX", "StartReactOnBootReceiver ACTION_BOOT_COMPLETED");
 
       SharedPreferences sharedPreferences = context.getSharedPreferences("de.mxs.reactnativemobackgroundexecution", Context.MODE_PRIVATE);
       if (!sharedPreferences.getBoolean("startOnBoot", false)) {
         return;
       }
-//      Log.i("XXX", "StartReactOnBootReceiver go start");
+      Log.i("XXX", "StartReactOnBootReceiver go start");
 
       ReactInstanceEventListener sender = reactContext -> {
+        Log.i("XXX", "StartReactOnBootReceiver send bootCompleted event");
         WritableMap args = Arguments.createMap();
         args.putString("type", "bootCompleted");
         reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("ReactNativeMoBackgroundExecution", args);
@@ -40,7 +42,7 @@ public class StartReactOnBootReceiver extends BroadcastReceiver {
         if (reactContext == null) {
           reactInstanceManager.addReactInstanceEventListener(sender);
           if (!reactInstanceManager.hasStartedCreatingInitialContext()) {
-//            Log.i("XXX", "StartReactOnBootReceiver createReactContextInBackground");
+            Log.i("XXX", "StartReactOnBootReceiver createReactContextInBackground");
             reactInstanceManager.createReactContextInBackground();
           }
         } else {

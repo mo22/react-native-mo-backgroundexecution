@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
@@ -107,18 +106,16 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
   @ReactMethod
   public void createWakeLock(ReadableMap args, Promise promise) {
     try {
+      Log.i("XXX", "createWakeLock");
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
         PowerManager powerManager = getReactApplicationContext().getSystemService(PowerManager.class);
         String tag = "rnbe:" + wakeLockCounter;
         wakeLockCounter++;
+        // @TODO: type?
         PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, tag);
-        if (args.hasKey("timeout")) {
-          wakeLock.acquire(args.getInt("timeout"));
-        } else {
-          wakeLock.acquire();
-        }
+        // @TODO: timeout?
+        wakeLock.acquire();
         wakeLocks.put(tag, wakeLock);
-        promise.resolve(tag);
       } else {
         promise.resolve(true);
       }
@@ -141,40 +138,4 @@ public class ReactNativeMoBackgroundExecution extends ReactContextBaseJavaModule
     }
   }
 
-  private int wifiLockCounter = 1;
-  private final Map<String, WifiManager.WifiLock> wifiLocks = new HashMap<String, WifiManager.WifiLock>();
-
-  @SuppressWarnings("unused")
-  @ReactMethod
-  public void createWifiLock(ReadableMap args, Promise promise) {
-    try {
-      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-        WifiManager wifiManager = getReactApplicationContext().getSystemService(WifiManager.class);
-        String tag = "rnbe:" + wakeLockCounter;
-        wakeLockCounter++;
-        WifiManager.WifiLock wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, tag);
-        wifiLock.acquire();
-        wifiLocks.put(tag, wifiLock);
-        promise.resolve(tag);
-      } else {
-        promise.resolve(true);
-      }
-    } catch (Exception ex) {
-      promise.reject(ex);
-    }
-  }
-
-  @SuppressWarnings("unused")
-  @ReactMethod
-  public void releaseWifiLock(String id, Promise promise) {
-    try {
-      if (wifiLocks.containsKey(id)) {
-        Objects.requireNonNull(wifiLocks.get(id)).release();
-        wifiLocks.remove(id);
-      }
-      promise.resolve(null);
-    } catch (Exception ex) {
-      promise.reject(ex);
-    }
-  }
 }
