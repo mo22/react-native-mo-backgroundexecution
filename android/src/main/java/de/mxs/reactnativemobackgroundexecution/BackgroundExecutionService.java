@@ -47,7 +47,7 @@ public class BackgroundExecutionService extends Service {
     super.onCreate();
     Log.i("XXX", "BackgroundExecutionService.onCreate");
 
-    BackgroundJobService.schedule(getApplicationContext());
+//    BackgroundJobService.schedule(getApplicationContext());
 
     // start a timer?
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
